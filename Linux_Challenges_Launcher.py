@@ -3,7 +3,7 @@
 import os
 from subprocess import Popen
 import threading
-import Challenge_Selector2 as Challenge_Selector
+import Challenge_Selector
 import json
 import configReader
 import Challenge
