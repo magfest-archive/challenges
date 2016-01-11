@@ -4,6 +4,9 @@ __pycache__/
 
 # C extensions
 *.so
+images/
+roms/
+saves/
 
 # Distribution / packaging
 .Python

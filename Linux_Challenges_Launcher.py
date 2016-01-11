@@ -11,7 +11,7 @@ import Console
 import time
 import shutil
 
-HOME = "/home/mark"
+HOME = "/home/mark25"
 EVROUTER_RC = HOME+"/.evrouterrc"
 
 KEYCODES = {  "select":"minus underscore minus underscore",
@@ -50,36 +50,38 @@ while(1):
     print("Selected console", console.name)
     print("Selected challenge", challenge.readableName)
     
-    # Generate the evrouter file
-    with open(EVROUTER_RC, "w") as evrouter_config:
-      evrouter_config.write(challenge.generate_evrouter())
+#    # Generate the evrouter file
+#    with open(EVROUTER_RC, "w") as evrouter_config:
+#      evrouter_config.write(challenge.generate_evrouter())
     
-    # Launch key rebinding
-    if os.path.isfile("/tmp/.evrouter:0.0"):
-      os.system("evrouter -q")
-      os.system("rm -f /tmp/.evrouter:0.0")
-    os.system('evrouter -c ~/.evrouterrc /dev/input/*')
+#    # Launch key rebinding
+#    if os.path.isfile("/tmp/.evrouter:0.0"):
+#      os.system("evrouter -q")
+#      os.system("rm -f /tmp/.evrouter:0.0")
+#    os.system('evrouter -c ~/.evrouterrc /dev/input/*')
     
     # Lauch Xmodmap
-    newmodmap = ""
-    with open(HOME+"/.Xmodmap.orig", "r") as origmodmap:
-      for line in origmodmap.readlines():
-        for key in challenge.disabledKeys:
-          if not key in line:
-            newmodmap += line
-    with open(HOME+"/.Xmodmap", "w") as newmodmapfile:
-      newmodmapfile.write(newmodmap)
-    os.system("xmodmap "+HOME+"/.Xmodmap")
-    
-    # Copy Save file
-    if not os.path.isdir(console.save_destination):
-      os.makedirs(console.save_destination)
-    shutil.copy(challenge.save_path, console.save_destination)
+#    newmodmap = ""
+#    with open(HOME+"/.Xmodmap.orig", "r") as origmodmap:
+#      for line in origmodmap.readlines():
+#        for key in challenge.disabledKeys:
+#          if not key in line:
+#            newmodmap += line
+#    with open(HOME+"/.Xmodmap", "w") as newmodmapfile:
+#      newmodmapfile.write(newmodmap)
+#    os.system("xmodmap "+HOME+"/.Xmodmap")
     
     # Copy Config file
     if os.path.isdir(console.config_destination):
-      os.rmdir(console.config_destination)
+      shutil.rmtree(console.config_destination)
+    print("Copying config file from %s to %s" % (console.config_source, console.config_destination))
     shutil.copytree(console.config_source, console.config_destination)
+
+    # Copy Save file
+    if not os.path.isdir(console.save_destination):
+      os.makedirs(console.save_destination)
+    print("Copying save file from %s to %s" % (challenge.save_path, console.save_destination))
+    shutil.copy(challenge.save_path, console.save_destination)
     
     # Print a helpful message
     Popen(['sleep 4 ; notify-send "' + console.notify_text + '"'], shell=True)
@@ -89,9 +91,9 @@ while(1):
     print('Command: '+challenge.launch_cmd())
     os.system(challenge.launch_cmd())
     
-    # kill key rebinding  
-    os.system("evrouter -q")
+#    # kill key rebinding  
+#    os.system("evrouter -q")
     
-    # Repair Xmodmap
-    os.system("xmodmap "+HOME+"/.Xmodmap.orig")
+#    # Repair Xmodmap
+#    os.system("xmodmap "+HOME+"/.Xmodmap.orig")
     
