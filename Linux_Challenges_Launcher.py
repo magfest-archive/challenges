@@ -44,6 +44,9 @@ for i in consoles:
 
 challenge_selector = Challenge_Selector.Challenge_Selector(consoles, global_conf)
 
+# Launch antimicro
+os.system("antimicro --hidden --profile ./controller_with_adp.joystick.amgp &")
+
 while(1):
     # Get the game from the menu
     console, challenge = challenge_selector.get_challenge()
@@ -71,6 +74,7 @@ while(1):
 #      newmodmapfile.write(newmodmap)
 #    os.system("xmodmap "+HOME+"/.Xmodmap")
     
+
     # Copy Config file
     if os.path.isdir(console.config_destination):
       shutil.rmtree(console.config_destination)
